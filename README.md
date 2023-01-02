@@ -1,12 +1,12 @@
 <h2 align= "center">🖥️ NSC-2023 🖥️</h2>
 <p align="center">
     <img width="460" height="300" src="https://media.discordapp.net/attachments/704271246556397638/1059488371472355349/image.png">
-    <blockquote align= "center">this photo is template circuit diagram.</blockquote>
+    <i>this photo is template circuit diagram.</i>
 </p>
 
 <p align="center">
     <img width="460" height="300" src="https://media.discordapp.net/attachments/704271246556397638/1059488743364509817/cir.png">
-    <blockquote align= "center">this photo is my circuit diagram.</blockquote>
+    <i>this photo is my circuit diagram.</i>
 </p>
 <h4>Feature :</h2>
 <ul>

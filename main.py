@@ -21,8 +21,8 @@ def main():
         for x, y in enumerate(G.nodes):
             if ((j[0] == netlist[x][2]) and (j[1] == netlist[x][3])) or ((j[0] == netlist[x][3]) and (j[1] == netlist[x][2])):
                 array.append(y - 1)
-    print(array)
-    print(G.edges, G.nodes)
+    # print(array)
+    # print(G.edges, G.nodes)
     for i in range(1, len(pos) + 1):
         posi[i - 1] = [pos[i][0], pos[i][1]]
     cct = Circuit()

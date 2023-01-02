@@ -10,4 +10,3 @@
 - 👋 Hi, I’m Narawit Inyos
 - 🌱 I’m currently learning Robotics Engineering and Artificial Intelligence
 - 📫 How to reach me narwit_i@cmu.ac.th
-The background color should be #0969DA for light mode and `rgb(9, 105, 218)` for dark mode.

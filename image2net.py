@@ -44,8 +44,7 @@ for i, a in enumerate(objR):
 # 0 > 0, 1
 # 2 > 4
 # * 10%
-node = []
-dummy = []
+node = [] # [R ตัวไหน, คาดว่ามี Pin ไหน]
 for i, x in enumerate(objR):
     for j, y in enumerate(pinP):
         if ((x[2] - (x[2] * 0.1)) < y[2]) and (x[2] > y[2]):

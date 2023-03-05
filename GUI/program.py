@@ -1,3 +1,4 @@
+import os
 from tkinter  import *
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
@@ -9,7 +10,7 @@ from PIL import Image, ImageTk
 root = Tk()
 root.title("InspectCir Lite") #ชื่อของหน้าต่าง
 
-
+pathf =""
 
 
 #ใส่ข้อความในหน้าจอ
@@ -23,19 +24,22 @@ def showMessage2():
     Label(root,text="Coming Soon too!",fg="black",bg="yellow",font="50").pack()
 def exit_x():
     exit()
-def select_files():
+def select_files2d():
     path=fd.askopenfilename(filetypes=[("Image File",'.jpg')])
     im = Image.open(path)
     tkimage = ImageTk.PhotoImage(im)
     myvar=Label(root,image = tkimage)
     myvar.image = tkimage
     myvar.pack()
+    comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
+    os.system(comand_d)
+    print(path)
 
 
 #ใส่ปุ่มกด
 bt1=Button(text="Circuit Sanbox",fg="White",bg="Black",command=showMessage1).pack()
 bt2=Button(text="Circuit Practice",fg="White",bg="Black",command=showMessage2).pack()
-bt1=Button(text="chose picture",fg="White",bg="Black",command=select_files).pack()
+bt1=Button(text="chose picture",fg="White",bg="Black",command=select_files2d).pack()
 bt3=Button(text="Exit",fg="White",bg="Black",command=exit_x).pack()
 
 root.geometry("1600x900+100+50") #กำหนดขนาดของหน้าจอเริ่มต้น

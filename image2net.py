@@ -30,13 +30,13 @@ def toNetlist():
 
     for i, x in enumerate(pinP):
         for j, y in enumerate(pinXY[indP]):
-            if (y[0] in x) and (y[1] in x):
+            if (y[0] in x) and (y[1] in x) and (x[0] == 4):
                 x.append("P%s" % j)
         print(x)
 
     for i, a in enumerate(objR):
         for j, b in enumerate(objXY[indO]):
-            if (b[0] in a) and (b[1] in a):
+            if (b[0] in a) and (b[1] in a) and (a[0] == 5):
                 a.append("R%s" % j)
         print(a)
 

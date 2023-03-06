@@ -12,7 +12,18 @@ mainmenu.title("InspectCir Lite") #ชื่อของหน้าต่าง
 
 pathf =""
 
-
+#นำเข้ารูปภาพ
+def select_files2d():
+    path=fd.askopenfilename(filetypes=[("Image File",'.jpg'),("Image File" , '.png')])
+    im = Image.open(path)
+    tkimage = ImageTk.PhotoImage(im)
+    myvar=Label(mainmenu,image = tkimage)
+    myvar.image = tkimage
+    myvar.pack()
+    comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
+    os.system(comand_d)
+    print(path)
+    
 #ใส่ข้อความในหน้าจอ
 myLabel1 = Label(mainmenu,text="Welcome to InspectCir Lite!",font=50).pack()
 #Sandbox window
@@ -59,16 +70,7 @@ Mymenu.add_cascade(label="Edit")
 Mymenu.add_cascade(label="View")
 Mymenu.add_cascade(label="Run")
 
-def select_files2d():
-    path=fd.askopenfilename(filetypes=[("Image File",'.jpg'),("Image File" , '.png')])
-    im = Image.open(path)
-    tkimage = ImageTk.PhotoImage(im)
-    myvar=Label(mainmenu,image = tkimage)
-    myvar.image = tkimage
-    myvar.pack()
-    comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
-    os.system(comand_d)
-    print(path)
+
 
 
 #ใส่ปุ่มกด

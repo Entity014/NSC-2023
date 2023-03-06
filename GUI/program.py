@@ -16,7 +16,6 @@ pathf =""
 #ใส่ข้อความในหน้าจอ
 myLabel1 = Label(mainmenu,text="Hi There!",font=50).pack()
 
-
 #Sandbox window
 def Sandbox():
     SandboxCir = Tk() #สำหรับทำ Sandbox Circuit
@@ -82,7 +81,13 @@ bt1=Button(text="Circuit Sandbox",fg="White",bg="Black",command = Sandbox).pack(
 bt2=Button(text="Circuit Practice",fg="White",bg="Black",command = Practice).pack()
 bt3=Button(text="Exit",fg="White",bg="Black",command = ExitProgram).pack()
 
-#ของเนส
+#Create Function
+def showMessage1():
+    Label(mainmenu,text="Coming Soon!",fg="red",bg="yellow",font=15).pack()
+def showMessage2():
+    Label(mainmenu,text="Coming Soon too!",fg="black",bg="yellow",font="50").pack()
+def exit_x():
+    exit()
 def select_files2d():
     path=fd.askopenfilename(filetypes=[("Image File",'.jpg')])
     im = Image.open(path)
@@ -93,6 +98,7 @@ def select_files2d():
     comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
     os.system(comand_d)
     print(path)
+
 
 #ใส่ปุ่มกด
 bt1=Button(text="Circuit Sanbox",fg="White",bg="Black",command=showMessage1).pack()
@@ -105,8 +111,8 @@ mainmenu.mainloop()
 
 #กล่องข้อความ
 #txt=StringVar()
-#myLabel5=Label(root,text="Please insert your username : ").pack()
-#mytext=Entry(root,textvariable=txt).pack()
+#myLabel5=Label(mainmenu,text="Please insert your username : ").pack()
+#mytext=Entry(mainmenu,textvariable=txt).pack()
 
 
 

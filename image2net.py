@@ -33,13 +33,13 @@ def toNetlist():
         for j, y in enumerate(pinXY[indP]):
             if (y[0] in x) and (y[1] in x) and (x[0] == 4):
                 x.append("P%s" % j)
-        print(x)
+        # print(x)
 
     for i, a in enumerate(objR):
         for j, b in enumerate(objXY[indO]):
             if (b[0] in a) and (b[1] in a) and (a[0] == 5):
                 a.append("R%s" % j)
-        print(a)
+        # print(a)
 
     # 1 > 2, 3
     # 0 > 0, 1
@@ -90,7 +90,7 @@ def toNetlist():
         countX.append(pinObjList[i][0])
     df = pd.value_counts(np.array(countX))
     # print(df.values)
-    if (df.values).all is not 2:
+    if (df.values).all != 2:
         notFound = True
         # print(df.values, notFound)
 
@@ -134,7 +134,7 @@ def toNetlist():
     # print(connectPinX)
 
     netlist = []
-    maxPin = max(pinObjList)[1][1:2]
+    maxPin = max(pinObjList)[1][1]
     # print(maxPin)
     for i, x in enumerate(connectPinX):
         for j, y in enumerate(connectPinX):
@@ -186,12 +186,12 @@ def toNetlist():
                     # print(x, y)
 
     # netlist = [[1, "R1", 1, 2], [2, "R2", 1, 3], [3, "R3", 3, 4], [4, "C4", 5, 4], [5, "C5", 6, 5], [6, "D6", 2, 6]]
-    
-    print("connectPin :", connectPin)
-    print("connectPinX :",connectPinX)
+    netlist.sort()
+    # print("connectPin :", connectPin)
+    # print("connectPinX :",connectPinX)
     # print(netlist)
     # print(positionList)
-    print("pinObjList :",pinObjList)
+    # print("pinObjList :",pinObjList)
     return netlist
 
 print(toNetlist())

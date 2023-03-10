@@ -7,8 +7,9 @@ from image2net import toNetlist
 
 def main():
     netlist = toNetlist()
+    cir = ""
     G = nx.Graph()
-    # netlist = [[1, 'R0', 1, 999], [2, 'R1', 1, 2], [3, 'R2', 2, 3]]
+    # netlist = [[1, 'R0', 4, 1], [2, 'R1', 1, 2], [3, 'R2', 2, 3]]
     # netlist = [[1, "R1", 1, 2], [2, "R2", 1, 3], [3, "R3", 3, 4], [4, "C4", 5, 4], [5, "C5", 6, 5], [6, "D6", 2, 6]]
     posi = np.zeros((len(netlist), 2))
     for i, arr in enumerate(netlist):
@@ -21,6 +22,11 @@ def main():
         'width': 3, 'labels': labels, 'font_weight': 'bold'}
     nx.draw(G, **options)
     
+    for i in range(len(netlist)):
+        # print(f"{netlist[i][1]} {netlist[i][2]} {netlist[i][3]}; right")
+        cir += f"{netlist[i][1]} {netlist[i][2]} {netlist[i][3]}; right\n"
+    cct = Circuit(cir)
+    cct.draw()
     # array = []
     # for i, j in enumerate(G.edges):
     #     for x, y in enumerate(G.nodes):

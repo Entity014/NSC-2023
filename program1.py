@@ -70,7 +70,7 @@ def Practice():
     Button(practice,text="Chapter 4",fg="Black",bg="Grey",font="150").pack()
     #mainmenu.destroy()
     #Practice.geometry("800x600+100+50")
-def chapter1():
+def chapter1(): 
     Chapter1= Toplevel(mainmenu)
     Chapter1.geometry("750x250")
     Chapter1.title("Chapter 1")

@@ -3,52 +3,78 @@ from tkinter  import *
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 from PIL import Image, ImageTk
-
+from tkinter import messagebox
 
 
 #สร้างหน้าจอ ขึ้นมาเพื่อแสดงผล
-root = Tk()
-root.title("InspectCir Lite") #ชื่อของหน้าต่าง
+mainmenu = Tk()
+mainmenu.title("InspectCir Lite") #ชื่อของหน้าต่าง
 
 pathf =""
 
-
-#ใส่ข้อความในหน้าจอ
-myLabel1 = Label(root,text="Hi There!",font=50).pack()
-
-
-#Create Function
-def showMessage1():
-    Label(root,text="Coming Soon!",fg="red",bg="yellow",font=15).pack()
-def showMessage2():
-    Label(root,text="Coming Soon too!",fg="black",bg="yellow",font="50").pack()
-def exit_x():
-    exit()
+#นำเข้ารูปภาพ
 def select_files2d():
-    path=fd.askopenfilename(filetypes=[("Image File",'.jpg')])
+    path=fd.askopenfilename(filetypes=[("Image File",'.jpg'),("Image File" , '.png')])
     im = Image.open(path)
     tkimage = ImageTk.PhotoImage(im)
-    myvar=Label(root,image = tkimage)
+    myvar=Label(mainmenu,image = tkimage)
     myvar.image = tkimage
     myvar.pack()
     comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
     os.system(comand_d)
     print(path)
+    
+#ใส่ข้อความในหน้าจอ
+myLabel1 = Label(mainmenu,text="Welcome to InspectCir Lite!",font=250,fg="Black").pack()
 
+#Practice window
+def Practice():
+    practice = Tk()#สำหรับแบบฝึกหัด
+    practice.title("Practice your Circuit")
+    Button(practice,text="Chapter 1",fg="Black",bg="Grey",font="150").pack()
+    Button(practice,text="Chapter 2",fg="Black",bg="Grey",font="150").pack()
+    Button(practice,text="Chapter 3",fg="Black",bg="Grey",font="150").pack()
+    Button(practice,text="Chapter 4",fg="Black",bg="Grey",font="150").pack()
+    #mainmenu.destroy()
+    #Practice.geometry("800x600+100+50")
+
+#กล่องโต้ตอบ
+def ExitProgram():
+    confirm = messagebox.askquestion("Exit","Are you sure about to exit?" )
+    if confirm == "yes" :
+        mainmenu.destroy()
+
+#สร้างแถบเมนู
+#Mymenu = Menu()
+#mainmenu.config(menu=Mymenu)
+#Add Sub-Menu bar
+#menuitem = Menu()
+#menuitem.add_command(label="New Window")
+#menuitem.add_command(label="Open File")
+#menuitem.add_command(label="Save File")
+#menuitem.add_command(label="Exit",command = ExitProgram)
+#Add Menu bar
+#Mymenu.add_cascade(label="File",menu=menuitem)
+#Mymenu.add_cascade(label="Edit")
+#Mymenu.add_cascade(label="View")
+#Mymenu.add_cascade(label="Run")
 
 #ใส่ปุ่มกด
-bt1=Button(text="Circuit Sanbox",fg="White",bg="Black",command=showMessage1).pack()
-bt2=Button(text="Circuit Practice",fg="White",bg="Black",command=showMessage2).pack()
-bt1=Button(text="chose picture",fg="White",bg="Black",command=select_files2d).pack()
-bt3=Button(text="Exit",fg="White",bg="Black",command=exit_x).pack()
+bt1=Button(mainmenu,text="Circuit Sandbox",fg="Black",bg="Light Grey",font="150",command = select_files2d).pack()
+bt2=Button(mainmenu,text="Circuit Practice",fg="Black",bg="Light Grey",font="150",command = Practice).pack()
+bt3=Button(mainmenu,text="Exit",fg="Black",bg="Light Grey",font="150",command = ExitProgram).pack()
+#bt4=Button(text="Select picture",fg="White",bg="Black",command=select_files2d).pack()
 
-root.geometry("1600x900+100+50") #กำหนดขนาดของหน้าจอเริ่มต้น
-root.mainloop()
+#mainmenu.geometry("800x600+100+50") #กำหนดขนาดของหน้าจอเริ่มต้น
+mainmenu.mainloop()
 
-#กล่องข้อความ
-#txt=StringVar()
-#myLabel5=Label(root,text="Please insert your username : ").pack()
-#mytext=Entry(root,textvariable=txt).pack()
-
-
+#Sandbox window
+#def Sandbox():
+    #SandboxCir = Tk() #สำหรับทำ Sandbox Circuit
+    #SandboxCir.title("Sandbox your Circuit")
+    ##Label(SandboxCir,text="Click on Select Picture to scan your citcuit\n",font=175,fg="Red").pack()
+    #Button(SandboxCir,text="Select Picture",fg="Black",bg="Grey",font="150",command=select_files2d).pack()
+    #Button(SandboxCir,text="Back",fg="Black",bg="Grey",font="100").pack()
+    #mainmenu.destroy() #ปิดหน้าต่างหลัก
+    #SandboxCir.geometry("800x600+100+50")
 

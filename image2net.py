@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
-def toNetlist():
-    mode = "High"
+def toNetlist(mode:str):
+    # x, y, width, height
+    # mode = "High"
     # mode = "Low"
-    f = open("1.txt", "r")
+    f = open("runs\detect\exp10\labels\IMG_2077.txt", "r")
     arr = []
     for i, x in enumerate(f):
         arr.append([float(i) for i in x.split(' ')])
@@ -55,7 +56,7 @@ def toNetlist():
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
-            if ((x[1] + (x[1] * 0.1)) > y[1]) and (x[1] < y[1]):
+            if ((x[1] + (x[1] * 0.2)) > y[1]) and (x[1] < y[1]):
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
@@ -68,40 +69,56 @@ def toNetlist():
                     if ((x[2] + x[4]) > y[2]) and (x[2] < y[2] and mode == "High"):
                         if (y[1] > x[1]):
                             pinObjList.append([x[5], y[5] + "R"])
+                            # for a, q in enumerate(node):
+                            #     if (y[5] in q):
+                            #         node.remove(q)
                             # print(x[5], y[5], "R")
                         elif (y[1] < x[1]):
                             pinObjList.append([x[5], y[5] + "L"])
                             # print(x[5], y[5], "L")
                         positionList.append([y[5], y[1]])
-                    if ((x[2] + (x[4] * 2.5) > y[2]) and (x[2] + x[4] < y[2])and mode == "Low"):
-                        # print(y[5], (x[2] + (x[4] * 2)), (x[2] + x[4]), y[2])
-                        if (y[1] > x[1]):
-                            pinObjList.append([x[5], y[5] + "R"])
-                            # print(x[5], y[5], "R")
-                        elif (y[1] < x[1]):
-                            pinObjList.append([x[5], y[5] + "L"])
-                            # print(x[5], y[5], "L")
-                        positionList.append([y[5], y[1]])
-                    # print(y[5], (x[2] + x[4]), (x[2]), y[2])
+                    elif (mode == "Low"):
+                        if (((x[1] - (x[3] ** 1.0) < y[1]) and (x[1] + (x[3] ** 1.2) > y[1])) and ((x[2] < y[2]) and (x[2] + (x[3]**1.4) > y[2]))):
+                            if (((x[1] - (x[3] ** 1.0) < y[1] + y[3]) and (x[1] + (x[3] ** 1.2) > y[1] + y[3])) and ((x[2] < y[2] + y[4]) and (x[2] + (x[3]**1.4) > y[2] + y[4]))):
+                                if (x[2] + (x[4] ** 1.3) < y[2] and x[2] + (x[4] ** 1.3) < y[2] + y[4]):
+                                    # print(x[1] - (x[3] ** 1.0), x[1] + (x[3] ** 1.1), x[2], x[2] + (x[3]**1.4), x[5])
+                                    # print(y[1] , y[2], y[1] + y[3], y[2] + y[4], y[5])
+                                    # print(x[1], x[1] + (x[3] ** 1.1), x[2], x[2] + (x[4] ** 1.3), x[5])
+                                    if (y[1] > x[1]):
+                                        pinObjList.append([x[5], y[5] + "R"])
+                                        # print(x[5], y[5], "R")
+                                    elif (y[1] < x[1]):
+                                        pinObjList.append([x[5], y[5] + "L"])
+                                        # print(x[5], y[5], "L")
+                                    positionList.append([y[5], y[1]])
+                        # print("-----------------------------")
+    # print(pinObjList)
 
     countX = []
+    tempCountX = []
     notFound = False
     for i in range(len(pinObjList)):
         countX.append(pinObjList[i][0])
     df = pd.value_counts(np.array(countX))
-    # print(df.values)
-    if (df.values).all != 2:
+    for i, x in enumerate(countX):
+        if df.loc[x] == 1:
+            tempCountX.append(x)
+    if (df.values[0]) != 2 or (df.values[1] != 2) or (df.values[2] != 2):
         notFound = True
         # print(df.values, notFound)
 
     connectPin = []
+    notConnectPin = False
     for i, x in enumerate(positionList):
         for j, y in enumerate(positionList):
             if (x[1] - x[1] * 0.03 < y[1]) and (x[1] + x[1] * 0.03 > y[1]) and (x != y):
                 if ([x[0], y[0]] not in connectPin):
                     connectPin.append([x[0], y[0]])
-                # print(x[0], y[0])
-                # print(x[0], y[0], x[1] - x[1] * 0.03, x[1] + x[1] * 0.03, y[1])
+                    # print(x[0], y[0], x[1] - x[1] * 0.03, x[1] + x[1] * 0.03, y[1])
+    # print(positionList)
+
+    if (len(connectPin) == 0):
+        notConnectPin = True
 
     # เคลียร์ตัวที่ซ้ำ
     for i, x in enumerate(connectPin):
@@ -120,78 +137,142 @@ def toNetlist():
                 # if (int(y[0][1:]) > len(connectPin)) and ([x[0], int(y[0][1:])] not in connectPinX):
                 if (int(y[0][1:]) > len(connectPin)) and ([x[0], y[0]] not in connectPinX):
                     # connectPinX.append([x[0], int(y[0][1:]) - 1])#y[0]])
-                    connectPinX.append([x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]])
+                    # connectPinX.append([x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]])
+                    pinObjList[i] = [x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]]
                 else:
-                    # if ([x[0], int(y[0][1:])] not in connectPinX):
                     if ([x[0], y[0]] not in connectPinX):
-                        connectPinX.append([x[0], y[0] + x[1][-1]])#y[0]])
+                        # connectPinX.append([x[0], y[0] + x[1][-1]])#y[0]])
+                        pinObjList[i] = [x[0], y[0] + x[1][-1]]
             # Not Found Pin
             else:
                 # print(x, 1)
                 # if ([x[0], int(x[1][1:])] not in connectPinX):
                 if ([x[0], x[1]] not in connectPinX) and (notFound):
-                    connectPinX.append([x[0], x[1]])#x[1]])
-    # print(connectPinX)
+                    # connectPinX.append([x[0], x[1]])#x[1]])
+                    pinObjList[i] = [x[0], x[1]]
+    # print(pinObjList)
 
     netlist = []
-    maxPin = max(pinObjList)[1][1]
-    # print(maxPin)
-    for i, x in enumerate(connectPinX):
-        for j, y in enumerate(connectPinX):
-            if (x[0] in y) and (x != y):
-                # print(x, y)
-                dummy = [i + 1, x[0]]
-                if ("L" in x[1][2:]):
-                    # dummy.insert(3, x[1])
-                    dummy.insert(3, int(x[1][1:2]))
-                elif ("L" in y[1][2:]):
-                    # dummy.insert(3, y[1])
-                    dummy.insert(3, int(y[1][1:2]))
-                if ("R" in x[1][2:]):
-                    # dummy.insert(4, x[1])
-                    dummy.insert(4, int(x[1][1:2]))
-                elif ("R" in y[1][2:]):
-                    # dummy.insert(4, x[1])
-                    dummy.insert(4, int(y[1][1:2]))
-                # print(dummy)
-                netlist.append(dummy)
-                connectPinX.remove(x)
-                connectPinX.remove(y)
-    
-    # Not Found Pin
-    if (notFound):
-        for i, x in enumerate(connectPinX):
-            for j, y in enumerate(connectPinX):
-                if (x[0] in y):
-                    dummy = [i + 1, x[0]]
-                    if ([i + 1, x[0], x[1], y[1]] not in netlist):
-                        if ("L" in x[1][2:]):
+    tempArr = []
+    maxPin = max(pinObjList)[1][1:2]
+    if (not notConnectPin):
+        for i, x in enumerate(pinObjList):
+            for j, y in enumerate(pinObjList):
+                for k, z in enumerate(df.values):
+                    if (x[0] in y) and (x != y) and z == 2:
+                        # print(x, y)
+                        dummy = [x[0]]
+                        if ("L" in x[1][2]):
                             # dummy.insert(3, x[1])
-                            dummy.insert(3, int(x[1][1:2]))
-                            dummy.insert(4, int(maxPin) + i + 1)
-                        elif ("L" in y[1][2:]):
+                            dummy.insert(2, int(x[1][1]))
+                        elif ("L" in y[1][2]):
                             # dummy.insert(3, y[1])
-                            dummy.insert(3, int(y[1][1:2]))
-                            dummy.insert(4, int(maxPin) + i + 1)
-                        if ("R" in x[1][2:]):
+                            dummy.insert(2, int(y[1][1]))
+                        if ("R" in x[1][2]):
                             # dummy.insert(4, x[1])
-                            dummy.insert(3, int(maxPin) + i + 1)
-                            dummy.insert(4, int(x[1][1:2]))
-                        elif ("R" in y[1][2:]):
+                            dummy.insert(3, int(x[1][1]))
+                        elif ("R" in y[1][2]):
                             # dummy.insert(4, x[1])
-                            dummy.insert(3, int(maxPin) + i + 1)
-                            dummy.insert(4, int(y[1][1:2]))
-                        # print(dummy)
-                        netlist.append(dummy)
-                    # print(x, y)
+                            dummy.insert(3, int(y[1][1]))
+                        if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
+                            tempArr.append(dummy)
+                    for a, b in enumerate(tempCountX):
+                        if (x[0] not in y and x != y) and z != 2 and x[0] in b:
+                            dummy = [x[0]]
+                            if ("L" in x[1][2]):
+                                # dummy.insert(3, x[1])
+                                dummy.insert(2, int(x[1][1]))
+                                dummy.insert(3, int(maxPin) + i + 1)
+                            elif ("R" in x[1][2]):
+                                # dummy.insert(4, x[1])
+                                dummy.insert(2, int(maxPin) + i + 1)
+                                dummy.insert(3, int(x[1][1]))
+                            # print(dummy)
+                            if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
+                                tempArr.append(dummy)
 
-    # netlist = [[1, "R1", 1, 2], [2, "R2", 1, 3], [3, "R3", 3, 4], [4, "C4", 5, 4], [5, "C5", 6, 5], [6, "D6", 2, 6]]
-    netlist.sort()
-    # print("connectPin :", connectPin)
+        for i, x in enumerate(tempArr):
+            netlist.append([i + 1, x[0], x[1], x[2]])
+
+    # Not Found Pin
+    # if (notFound):
+    #     for i, x in enumerate(pinObjList):
+    #         for j, y in enumerate(pinObjList):
+    #             for k, z in enumerate(df.values):
+    #                 if (x[0] in y and x != y):
+    #                     dummy = [x[0]]
+    #                     print(z)
+    #                 # if ("L" in x[1][2]):
+    #                 #     # dummy.insert(3, x[1])
+    #                 #     dummy.insert(2, int(x[1][1]))
+    #                 #     dummy.insert(3, int(maxPin) + i + 1)
+    #                 # elif ("L" in y[1][2]):
+    #                 #     # dummy.insert(3, y[1])
+    #                 #     dummy.insert(2, int(y[1][1]))
+    #                 #     dummy.insert(3, int(maxPin) + i + 1)
+    #                 # if ("R" in x[1][2]):
+    #                 #     # dummy.insert(4, x[1])
+    #                 #     dummy.insert(2, int(maxPin) + i + 1)
+    #                 #     dummy.insert(3, int(x[1][1]))
+    #                 # elif ("R" in y[1][2]):
+    #                 #     # dummy.insert(4, x[1])
+    #                 #     dummy.insert(2, int(maxPin) + i + 1)
+    #                 #     dummy.insert(3, int(y[1][1]))
+    #                 # # print(dummy)
+    #                 # if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
+    #                 #     tempArr.append(dummy)
+    #                 # print(x, y)
+    #     print(tempArr)
+
+    nPin = []
+    if (notConnectPin):
+        for i, x in enumerate(pinObjList):
+            for j, y in enumerate(pinObjList):
+                dummy = [x[0]]
+                if (x[0] == y[0] and x != y):
+                    if ("L" in x[1][2]):
+                        dummy.insert(2, int(x[1][1]))
+                    elif ("L" in y[1][2]):
+                        dummy.insert(2, int(y[1][1]))
+                    if ("R" in x[1][2]):
+                        dummy.insert(3, int(x[1][1]))
+                    elif ("R" in y[1][2]):
+                        dummy.insert(3, int(y[1][1]))
+                if (len(dummy) == 3):
+                    # print([dummy[0], dummy[1], dummy[2]])
+                    if ([dummy[0], dummy[1], dummy[2]] not in nPin):
+                        nPin.append(dummy)
+        dummyE = []
+        for i, x in enumerate(nPin):
+            for j, y in enumerate(pinObjList):
+                if x[0] in y:
+                    dummyE.append(y)
+        
+        for i, x in enumerate(dummyE):
+            pinObjList.remove(x)
+        
+        tempInt = 0
+        for i, x in enumerate(pinObjList):
+            dummy = [i + 1, x[0]]
+            if ("L" in x[1][2]):
+                dummy.insert(3, int(x[1][1]))
+                dummy.insert(4, int(maxPin) + i + 1)
+            if ("R" in x[1][2]):
+                dummy.insert(3, int(maxPin) + i + 1)
+                dummy.insert(4, int(x[1][1]))
+            netlist.append(dummy)
+            tempInt = i
+            
+        for i, x in enumerate(nPin):
+            x.insert(0, tempInt + i + 2)
+            netlist.insert(tempInt + i + 1, x)
+    
+    print("connectPin :", connectPin)
     # print("connectPinX :",connectPinX)
     # print(netlist)
     # print(positionList)
-    # print("pinObjList :",pinObjList)
+    # print(notConnectPin)
+    print("pinObjList :",pinObjList)
     return netlist
 
-print(toNetlist())
+print(toNetlist("High"))

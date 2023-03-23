@@ -85,7 +85,6 @@ def select_files2d():
                 text,cct = netlist2Circuit(netlist)
                 cct.draw("Result/result.png")
         except:
-            print("test")
             resultpath = epath
         # detectedi= Toplevel(mainmenu)
         # detectedi.geometry("750x250")

@@ -92,7 +92,19 @@ def toNetlist(path:str, mode:str):
             for k, z in enumerate(node):
                 if (z[0] in x and z[1] in y):
                     if (mode == "HIGH"):
-                        if ((x[2] + x[4]) > y[2]) and (x[2] < y[2]):
+                        if ((x[2] + (x[4] * 1.05)) > y[2]) and (x[2] - (x[4]) < y[2]) and (x[5][0] != "C"):
+                            if ((x[1] - (x[4] * 2)) < y[1]) and ((x[1] + (x[4] * 2)) > y[1]):
+                                if (y[1] > x[1]):
+                                    pinObjList.append([x[5], y[5] + "R"])
+                                    # for a, q in enumerate(node):
+                                    #     if (y[5] in q):
+                                    #         node.remove(q)
+                                    # print(x[5], y[5], "R")
+                                elif (y[1] < x[1]):
+                                    pinObjList.append([x[5], y[5] + "L"])
+                                    # print(x[5], y[5], "L")
+                                positionList.append([y[5], y[1]])
+                        elif ((x[2] + (x[4] * 1.05)) > y[2]) and (x[2] < y[2]) and (x[5][0] == "C"):
                             if (y[1] > x[1]):
                                 pinObjList.append([x[5], y[5] + "R"])
                                 # for a, q in enumerate(node):
@@ -125,9 +137,9 @@ def toNetlist(path:str, mode:str):
                                         pinObjList.append([x[5], y[5] + "L"])
                                         # print(x[5], y[5], "L")
                                     positionList.append([y[5], y[1]])
-                    #     # print("-----------------------------")
-    print(pinObjList)
-    print(node)
+                        # print("-----------------------------")
+    # print(pinObjList)
+    # print(node)
 
     countX = []
     tempCountX = []
@@ -164,15 +176,14 @@ def toNetlist(path:str, mode:str):
     for i, x in enumerate(pinObjList):
         for j, y in enumerate(connectPin):
             if (y[0] + "L" in x) or (y[0] + "R" in x) or (y[1] + "L" in x) or (y[1] + "R" in x):
-                # if (int(y[0][1:]) > len(connectPin)) and ([x[0], int(y[0][1:])] not in connectPinX):
-                if (int(y[0][1:]) > len(connectPin)) and ([x[0], y[0]] not in connectPinX):
-                    # connectPinX.append([x[0], int(y[0][1:]) - 1])#y[0]])
-                    # connectPinX.append([x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]])
-                    pinObjList[i] = [x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]]
-                else:
-                    if ([x[0], y[0]] not in connectPinX):
-                        # connectPinX.append([x[0], y[0] + x[1][-1]])#y[0]])
-                        pinObjList[i] = [x[0], y[0] + x[1][-1]]
+                # if (int(y[0][1:]) > len(connectPin)):
+                #     # print(y, x, [x[0], y[0][0] + str(int(y[1][1:]) - 1) + x[1][-1]])
+                #     # connectPinX.append([x[0], int(y[0][1:]) - 1])#y[0]])
+                #     # connectPinX.append([x[0], y[0][0] + str(int(y[0][1:]) - 1) + x[1][-1]])
+                #     pinObjList[i] = [x[0], y[0][0] + str(int(y[1][1:]) - 1) + x[1][-1]]
+                # else:
+                #     # print(y, x)
+                pinObjList[i] = [x[0], y[1] + x[1][-1]]
             # Not Found Pin
             # else:
             #     # print(x, 1)
@@ -180,7 +191,7 @@ def toNetlist(path:str, mode:str):
             #     if ([x[0], x[1]] not in connectPinX) and (notFound):
             #         # connectPinX.append([x[0], x[1]])#x[1]])
             #         pinObjList[i] = [x[0], x[1]]
-    # print(pinObjList)
+    print(pinObjList)
 
     netlist = []
     tempArr = []
@@ -276,4 +287,4 @@ def toNetlist(path:str, mode:str):
     print("pinObjList :",pinObjList)
     return netlist
 
-print(toNetlist("runs/detect/exp6/labels/IMG_2070.txt", "Low"))
+print(toNetlist("runs/detect/exp41/labels/IMG_2672.txt", "High"))

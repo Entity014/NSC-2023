@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 def toNetlist(path:str, mode:str):
     # x, y, width, height
+    mode.upper()
     f = open(path, "r")
     arr = []
     for i, x in enumerate(f):
@@ -68,7 +69,7 @@ def toNetlist(path:str, mode:str):
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
-    # print(node)
+    print(node)
 
     tempNode = []
     tempNodeX = []
@@ -80,13 +81,13 @@ def toNetlist(path:str, mode:str):
         if dfNode.loc[x] > 2:
             tempNodeX.append(x)
             overNode = True
-    # print(overNode, tempNodeX)
+    print(overNode, tempNodeX)
 
     for i, x in enumerate(objR):
         for j, y in enumerate(pinP):
             for k, z in enumerate(node):
                 if (z[0] in x and z[1] in y):
-                    if (mode == "High"):
+                    if (mode == "HIGH"):
                         # print(x[1] - (x[4] * 0.65), x[1] + (x[3] * 1.4), x[2] + (x[4] * 2), x[2], x[5])
                         # print(y[1], y[2], y[1] + y[3], y[2] + y[4], y[0], y[5])
                         # if (x[1] - (x[4] * 0.65) < y[1] and x[1] + (x[3] * 1.4) > y[1]) and (x[2] < y[2] and x[2] + (x[4] * 2) > y[2]):
@@ -110,7 +111,7 @@ def toNetlist(path:str, mode:str):
                                 pinObjList.append([x[5], y[5] + "L"])
                                 # print(x[5], y[5], "L")
                             positionList.append([y[5], y[1]])
-                    elif (mode == "Low"):
+                    elif (mode == "LOW"):
                         if (((x[1] - (x[3] ** 1.0) < y[1]) and (x[1] + (x[3] ** 1.2) > y[1])) and ((x[2] < y[2]) and (x[2] + (x[3]**1.4) > y[2]))):
                             if (((x[1] - (x[3] ** 1.0) < y[1] + y[3]) and (x[1] + (x[3] ** 1.2) > y[1] + y[3])) and ((x[2] < y[2] + y[4]) and (x[2] + (x[3]**1.4) > y[2] + y[4]))):
                                 if (x[2] + (x[4] ** 1.12) < y[2] and x[2] + (x[4] ** 1.12) < y[2] + y[4]) and overNode:
@@ -133,7 +134,7 @@ def toNetlist(path:str, mode:str):
                                         # print(x[5], y[5], "L")
                                     positionList.append([y[5], y[1]])
                         # print("-----------------------------")
-    # print(pinObjList)
+    print(pinObjList)
 
     countX = []
     tempCountX = []
@@ -273,12 +274,12 @@ def toNetlist(path:str, mode:str):
             x.insert(0, tempInt + i + 2)
             netlist.insert(tempInt + i + 1, x)
     
-    # print("connectPin :", connectPin)
+    print("connectPin :", connectPin)
     # print("connectPinX :",connectPinX)
     # print(netlist)
     # print(positionList)
     # print(notConnectPin)
-    # print("pinObjList :",pinObjList)
+    print("pinObjList :",pinObjList)
     return netlist
 
-# print(toNetlist("runs/detect/exp10/labels/IMG_2474.txt", "Low"))
+print(toNetlist("runs/detect/exp10/labels/IMG_2474.txt", "Low"))

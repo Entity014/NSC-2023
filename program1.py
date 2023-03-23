@@ -49,6 +49,9 @@ def Detectpage():
     global A1
     Detectpage= Toplevel(mainmenu)
     Detectpage.geometry("750x250")
+    Detectpage.minsize(750, 250)
+    Detectpage.maxsize(750, 250)
+    
     Elabel = Label(Detectpage, image = Ebackground)
     Elabel.place(x = 0,y = 0)
 
@@ -91,6 +94,8 @@ def select_files2d():
         Resulti= Toplevel(mainmenu)
         Resulti.geometry("750x600")
         Resulti.title("Circuit")
+        Resulti.minsize(750, 600)
+        Resulti.maxsize(750, 600)
 
         # im = Image.open(detectedp)
         # img = im.resize((600,400))

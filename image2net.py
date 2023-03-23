@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-def toNetlist(mode:str):
+def toNetlist(path:str, mode:str):
     # x, y, width, height
-    f = open("runs\detect\exp\labels\IMG_2067.txt", "r")
+    f = open(path, "r")
     arr = []
     for i, x in enumerate(f):
         arr.append([float(i) for i in x.split(' ')])
@@ -60,27 +60,27 @@ def toNetlist(mode:str):
     connectPinX = []
     for i, x in enumerate(objR):
         for j, y in enumerate(pinP):
-            if ((x[1] - (x[1] * 0.1)) < y[1]) and (x[1] > y[1]):
+            if ((x[1] - (x[1] * 0.3)) < y[1]) and (x[1] > y[1]):
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
-            if ((x[1] + (x[1] * 0.2)) > y[1]) and (x[1] < y[1]):
+            if ((x[1] + (x[1] * 0.3)) > y[1]) and (x[1] < y[1]):
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
-    print(node)
+    # print(node)
 
     tempNode = []
-    # tempNodeX = []
+    tempNodeX = []
     overNode = False
     for i in range(len(node)):
         tempNode.append(node[i][0])
     dfNode = pd.value_counts(np.array(tempNode))
     for i, x in enumerate(tempNode):
         if dfNode.loc[x] > 2:
-            # tempNodeX.append(x)
+            tempNodeX.append(x)
             overNode = True
-    # print(overNode)
+    # print(overNode, tempNodeX)
 
     for i, x in enumerate(objR):
         for j, y in enumerate(pinP):
@@ -144,9 +144,6 @@ def toNetlist(mode:str):
     for i, x in enumerate(countX):
         if df.loc[x] == 1:
             tempCountX.append(x)
-    # if (df.values[0]) != 2 or (df.values[1] != 2) or (df.values[2] != 2):
-    #     notFound = True
-        # print(df.values, notFound)
 
     connectPin = []
     notConnectPin = False
@@ -213,8 +210,9 @@ def toNetlist(mode:str):
                         elif ("R" in y[1][2]):
                             # dummy.insert(4, x[1])
                             dummy.insert(3, int(y[1][1]))
-                        if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
-                            tempArr.append(dummy)
+                        if (len(dummy) == 3):
+                            if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
+                                tempArr.append(dummy)
                     for a, b in enumerate(tempCountX):
                         if (x[0] not in y and x != y) and z != 2 and x[0] in b:
                             dummy = [x[0]]
@@ -226,7 +224,6 @@ def toNetlist(mode:str):
                                 # dummy.insert(4, x[1])
                                 dummy.insert(2, int(maxPin) + a + 1)
                                 dummy.insert(3, int(x[1][1]))
-                            # print(dummy)
                             if ([dummy[0], dummy[1], dummy[2]] not in tempArr):
                                 tempArr.append(dummy)
 
@@ -276,12 +273,12 @@ def toNetlist(mode:str):
             x.insert(0, tempInt + i + 2)
             netlist.insert(tempInt + i + 1, x)
     
-    print("connectPin :", connectPin)
+    # print("connectPin :", connectPin)
     # print("connectPinX :",connectPinX)
     # print(netlist)
     # print(positionList)
     # print(notConnectPin)
-    print("pinObjList :",pinObjList)
+    # print("pinObjList :",pinObjList)
     return netlist
 
-print(toNetlist("High"))
+# print(toNetlist("runs/detect/exp10/labels/IMG_2474.txt", "Low"))

@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 import sys 
 import shutil
+import netlist2Circuit
+import image2net
 
 #สร้างหน้าจอ ขึ้นมาเพื่อแสดงผล
 mainmenu = Tk()
@@ -48,6 +50,22 @@ def select_files2d():
         # myvar=Label(diagram,image = new_image)
         # myvar.image = new_image
         # myvar.pack()
+        exppath = path_ofprogram+ "/runs/detect/"
+        if any(os.scandir(exppath)):
+            shutil.rmtree(path_ofprogram+ "/runs/detect/exp/")
+def practiceprob(k):
+    indexprob=["0_0","0_1","0_2","1_0","1_1","1_2","1_3","1_4","1_5","2_0","2_1","2_2","3_0","3_1","3_2","3_3"]
+    practicepath = path_ofprogram + "/chapter/" + indexprob[k-1] +".png"
+    practiceproblem= Toplevel(mainmenu)
+    practiceproblem.geometry("750x250")
+    practiceproblem.title("indexprob[k]")
+    
+    chapim = Image.open(practicepath)
+    chapimg = chapim.resize((600,400))
+    chapnew_image= ImageTk.PhotoImage(chapimg)
+    chapmyvar=Label(practiceproblem,image = chapnew_image)
+    chapmyvar.image = chapnew_image
+    chapmyvar.pack()
 
 #ใส่ข้อความในหน้าจอ
 myLabel1 = Label(mainmenu,text="Welcome to InspectCir Lite!",font=250,fg="Black").pack()
@@ -62,27 +80,27 @@ myLabel1 = Label(mainmenu,text="Welcome to InspectCir Lite!",font=250,fg="Black"
 #    Button(top,text="chose picture",fg="White",bg="Black",command=select_files2d).pack()
 #Practice window
 def Practice():
-    practice = Tk()#สำหรับแบบฝึกหัด
+    practice = Toplevel(mainmenu)#สำหรับแบบฝึกหัด
+    # practiceproblem.geometry("750x250")
     practice.title("Practice your Circuit")
-    Button(practice,text="Chapter 1",fg="Black",bg="Grey",font="150",command=chapter1).pack()
-    Button(practice,text="Chapter 2",fg="Black",bg="Grey",font="150").pack()
-    Button(practice,text="Chapter 3",fg="Black",bg="Grey",font="150").pack()
-    Button(practice,text="Chapter 4",fg="Black",bg="Grey",font="150").pack()
-    #mainmenu.destroy()
+    Button(practice,text="Exercise 1.1",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(1)).pack()
+    Button(practice,text="Exercise 1.2",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(2)).pack()
+    Button(practice,text="Exercise 1.3",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(3)).pack()
+    Button(practice,text="Exercise 2.1",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(4)).pack()
+    Button(practice,text="Exercise 2.2",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(5)).pack()
+    Button(practice,text="Exercise 2.3",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(6)).pack()
+    Button(practice,text="Exercise 2.4",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(7)).pack()
+    Button(practice,text="Exercise 2.5",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(8)).pack()
+    Button(practice,text="Exercise 2.6",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(9)).pack()
+    Button(practice,text="Exercise 3.1",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(10)).pack()
+    Button(practice,text="Exercise 3.2",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(11)).pack()
+    Button(practice,text="Exercise 3.3",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(12)).pack()
+    Button(practice,text="Exercise 4.1",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(13)).pack()
+    Button(practice,text="Exercise 4.2",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(14)).pack()
+    Button(practice,text="Exercise 4.3",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(15)).pack()
+    Button(practice,text="Exercise 4.4",fg="Black",bg="Grey",font="150",command=lambda:practiceprob(16)).pack()
+    # mainmenu.destroy()
     #Practice.geometry("800x600+100+50")
-def chapter1(): 
-    Chapter1= Toplevel(mainmenu)
-    Chapter1.geometry("750x250")
-    Chapter1.title("Chapter 1")
-
-    Button(Chapter1,text="Put your answer",fg="Black",bg="Grey",font="150").pack()
-    Chapterpath= path_ofprogram+"/chapter/1.jpg"
-    c_im = Image.open(Chapterpath)
-    c_img = c_im.resize((600,400))
-    c_new_image= ImageTk.PhotoImage(c_img)
-    myvar=Label(Chapter1,image = c_new_image)
-    myvar.image = c_new_image
-    myvar.pack()
 
 #กล่องโต้ตอบ
 def ExitProgram():
@@ -92,7 +110,6 @@ def ExitProgram():
         if not any(os.scandir(exppath)):
             mainmenu.destroy()
         else:
-            shutil.rmtree(path_ofprogram+ "/runs/detect/exp/")
             mainmenu.destroy()
 
 #สร้างแถบเมนู

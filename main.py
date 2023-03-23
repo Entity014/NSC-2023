@@ -6,23 +6,23 @@ from image2net import toNetlist
 from netlist2Circuit import netlist2Circuit
 
 def main():
-    mode = "High"
-    netlist = toNetlist(mode=mode)
-    G = nx.Graph()
-    # netlist = [[1, 'R0', 4, 1], [2, 'R1', 1, 2], [3, 'R2', 2, 3]]
-    # netlist = [[1, "R1", 1, 2], [2, "R2", 1, 3], [3, "R3", 3, 4], [4, "C4", 5, 4], [5, "C5", 6, 5], [6, "D6", 2, 6]]
-    posi = np.zeros((len(netlist), 2))
-    for i, arr in enumerate(netlist):
-        G.add_node(arr[0], label=f"{arr[0]}")
-        G.add_edge(arr[2], arr[3])
-    labels = nx.get_node_attributes(G, "label")
-    # pos=nx.get_node_attributes(graph,'pos')
-    pos = nx.spring_layout(G)
-    options = {'pos': pos, 'node_color': 'orange', 'node_size': 300,
-        'width': 3, 'labels': labels, 'font_weight': 'bold'}
-    nx.draw(G, **options)
+    netlist = toNetlist("High")
+    # G = nx.Graph()
+    # # netlist = [[1, 'R0', 4, 1], [2, 'R1', 1, 2], [3, 'R2', 2, 3]]
+    # # netlist = [[1, "R1", 1, 2], [2, "R2", 1, 3], [3, "R3", 3, 4], [4, "C4", 5, 4], [5, "C5", 6, 5], [6, "D6", 2, 6]]
+    # posi = np.zeros((len(netlist), 2))
+    # for i, arr in enumerate(netlist):
+    #     G.add_node(arr[0], label=f"{arr[0]}")
+    #     G.add_edge(arr[2], arr[3])
+    # labels = nx.get_node_attributes(G, "label")
+    # # pos=nx.get_node_attributes(graph,'pos')
+    # pos = nx.spring_layout(G)
+    # options = {'pos': pos, 'node_color': 'orange', 'node_size': 300,
+    #     'width': 3, 'labels': labels, 'font_weight': 'bold'}
+    # nx.draw(G, **options)
     text,cct = netlist2Circuit(netlist)
     print(text)
+    cct.draw("a.png")
     cct.draw()
     
     # array = []

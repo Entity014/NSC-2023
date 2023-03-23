@@ -69,6 +69,7 @@ def select_files2d():
         global detectedp
         global netlist
         path = '"'+path +'"'
+        imgsave = path_ofprogram+ "/Imgsave"
         detectedp = path_ofprogram+ "/runs/detect/exp/"+namej
         txtpath = path_ofprogram + "/runs/detect/exp/labels/"+name+".txt"
         resultpath = path_ofprogram +"/Result/result.png"
@@ -77,7 +78,9 @@ def select_files2d():
         try:
             comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
             os.system(comand_d)
-        
+            # move_c = "MOVE "+'"'+ detectedp +'"'+" "+'"'+ imgsave +'"'
+            # print(move_c)
+            shutil.move(detectedp, imgsave)
             if(TopV):
                 netlist = toNetlist(txtpath,"HIGH")
             else:

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 def toNetlist(path:str, mode:str):
     # x, y, width, height
-    mode.upper()
+    mode = mode.upper()
     f = open(path, "r")
     arr = []
     for i, x in enumerate(f):
@@ -33,7 +33,7 @@ def toNetlist(path:str, mode:str):
         for j, y in enumerate(pinXY[indP]):
             if (y[0] in x) and (y[1] in x) and (x[0] == 4):
                 x.append("P%s" % j)
-        # print(x)
+        print(x)
 
     for i, a in enumerate(objR):
         for j, b in enumerate(objXY[indO]):
@@ -49,7 +49,7 @@ def toNetlist(path:str, mode:str):
                 a.append("D%s" % j)
             elif (b[0] in a) and (b[1] in a) and (a[0] == 6):
                 a.append("R%s" % j)
-        # print(a)
+        print(a)
 
     # 1 > 2, 3
     # 0 > 0, 1
@@ -69,7 +69,7 @@ def toNetlist(path:str, mode:str):
                 node.append([x[5], y[5]])
                 # print((x[1] - (x[1] * 0.1)), x[1], y[5], x[5])
                 # print(y[1], y[5], x[5])
-    print(node)
+    # print(node)
 
     tempNode = []
     tempNodeX = []
@@ -81,25 +81,17 @@ def toNetlist(path:str, mode:str):
         if dfNode.loc[x] > 2:
             tempNodeX.append(x)
             overNode = True
-    print(overNode, tempNodeX)
+    # print(overNode, tempNodeX)
 
+    objR.sort()
+    pinP.sort()
+    node.sort()
+    # print(node)
     for i, x in enumerate(objR):
         for j, y in enumerate(pinP):
             for k, z in enumerate(node):
                 if (z[0] in x and z[1] in y):
                     if (mode == "HIGH"):
-                        # print(x[1] - (x[4] * 0.65), x[1] + (x[3] * 1.4), x[2] + (x[4] * 2), x[2], x[5])
-                        # print(y[1], y[2], y[1] + y[3], y[2] + y[4], y[0], y[5])
-                        # if (x[1] - (x[4] * 0.65) < y[1] and x[1] + (x[3] * 1.4) > y[1]) and (x[2] < y[2] and x[2] + (x[4] * 2) > y[2]):
-                        #     if (x[1] - (x[4] * 0.65) < y[1] + y[3] and x[1] + (x[3] * 1.4) > y[1] + y[3]) and (x[2] < y[2] + y[4] and x[2] + (x[4] * 2) > y[2] + y[4]):
-                        #         # print(x[1] - (x[4] * 0.65), x[1] + (x[3] * 1.4), x[2] + (x[4] * 2), x[2], x[5])
-                        #         # print(y[1], y[2], y[1] + y[3], y[2] + y[4], y[0], y[5])
-                        #         if (y[1] > x[1]):
-                        #             pinObjList.append([x[5], y[5] + "R"])
-                        #         elif (y[1] < x[1]):
-                        #             pinObjList.append([x[5], y[5] + "L"])
-                        #         positionList.append([y[5], y[1]])
-                        # print("--------------------")
                         if ((x[2] + x[4]) > y[2]) and (x[2] < y[2]):
                             if (y[1] > x[1]):
                                 pinObjList.append([x[5], y[5] + "R"])
@@ -133,8 +125,9 @@ def toNetlist(path:str, mode:str):
                                         pinObjList.append([x[5], y[5] + "L"])
                                         # print(x[5], y[5], "L")
                                     positionList.append([y[5], y[1]])
-                        # print("-----------------------------")
+                    #     # print("-----------------------------")
     print(pinObjList)
+    print(node)
 
     countX = []
     tempCountX = []
@@ -191,7 +184,8 @@ def toNetlist(path:str, mode:str):
 
     netlist = []
     tempArr = []
-    maxPin = max(pinObjList)[1][1]
+    if (len(pinObjList) != 0):
+        maxPin = max(pinObjList)[1][1]
     if (not notConnectPin):
         for i, x in enumerate(pinObjList):
             for j, y in enumerate(pinObjList):
@@ -282,4 +276,4 @@ def toNetlist(path:str, mode:str):
     print("pinObjList :",pinObjList)
     return netlist
 
-print(toNetlist("runs/detect/exp10/labels/IMG_2474.txt", "Low"))
+print(toNetlist("runs/detect/exp6/labels/IMG_2070.txt", "Low"))

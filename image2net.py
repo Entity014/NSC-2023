@@ -33,7 +33,7 @@ def toNetlist(path:str, mode:str):
         for j, y in enumerate(pinXY[indP]):
             if (y[0] in x) and (y[1] in x) and (x[0] == 4):
                 x.append("P%s" % j)
-        print(x)
+        # print(x)
 
     for i, a in enumerate(objR):
         for j, b in enumerate(objXY[indO]):
@@ -49,7 +49,7 @@ def toNetlist(path:str, mode:str):
                 a.append("D%s" % j)
             elif (b[0] in a) and (b[1] in a) and (a[0] == 6):
                 a.append("R%s" % j)
-        print(a)
+        # print(a)
 
     # 1 > 2, 3
     # 0 > 0, 1
@@ -191,7 +191,7 @@ def toNetlist(path:str, mode:str):
             #     if ([x[0], x[1]] not in connectPinX) and (notFound):
             #         # connectPinX.append([x[0], x[1]])#x[1]])
             #         pinObjList[i] = [x[0], x[1]]
-    print(pinObjList)
+    # print(pinObjList)
 
     netlist = []
     tempArr = []
@@ -279,12 +279,12 @@ def toNetlist(path:str, mode:str):
             x.insert(0, tempInt + i + 2)
             netlist.insert(tempInt + i + 1, x)
     
-    print("connectPin :", connectPin)
+    # print("connectPin :", connectPin)
     # print("connectPinX :",connectPinX)
     # print(netlist)
     # print(positionList)
     # print(notConnectPin)
-    print("pinObjList :",pinObjList)
+    # print("pinObjList :",pinObjList)
     return netlist
 
-print(toNetlist("runs/detect/exp41/labels/IMG_2672.txt", "High"))
+# print(toNetlist("runs/detect/exp41/labels/IMG_2672.txt", "High"))

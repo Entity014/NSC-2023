@@ -74,8 +74,8 @@ def netlist2Circuit(netlist):
 #netlist = [[1, 'R0', 1, 2], [2, 'R1', 1, 2], [3, 'R3', 2, 3],[4, 'R4', 3, 4],[5, 'R5', 3, 4],[6, 'R6', 3, 4]]
 #netlist = [[1, 'R0', 1, 2], [2, 'R1', 1, 2], [3, 'R3', 2, 3],[4, 'R4', 3, 4],[5, 'R5', 3, 4],[6, 'R6', 3, 4],[7, 'R7', 4, 5],[8, 'R8', 6, 7]]
 #netlist = [[1, 'R0', 1, 2], [2, 'R1', 2, 3],[3, 'R3', 1, 3]]
-# path = "runs/detect/exp41/labels/IMG_2672.txt"
-# netlist = toNetlist(path ,"High")
+# path = "runs/detect/exp9/labels/1_0_RRLow.txt"
+# netlist = toNetlist(path ,"Low")
 # text,cct = netlist2Circuit(netlist)
 
 # print(text)

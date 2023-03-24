@@ -32,7 +32,7 @@ def toNetlist(path:str, mode:str):
     for i, x in enumerate(pinP):
         for j, y in enumerate(pinXY[indP]):
             if (y[0] in x) and (y[1] in x) and (x[0] == 4):
-                x.append("P%s" % j)
+                x.append("P%s" % j + 1)
         # print(x)
 
     for i, a in enumerate(objR):

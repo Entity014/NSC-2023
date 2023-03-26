@@ -1,4 +1,5 @@
 import os
+import time
 from tkinter  import *
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
@@ -30,6 +31,8 @@ global netlist
 global background
 global Ebackground
 global Pbackground
+global count
+count = []
 background = PhotoImage( file = bGpath)
 Ebackground = PhotoImage( file = Exbg)
 Pbackground = PhotoImage( file = Pbg)
@@ -56,11 +59,11 @@ def Detectpage():
     Elabel.place(x = 0,y = 0)
 
     Button(Detectpage,text="Detect Image",height= 1, width=60,fg="Black",bg="#77CFFF",font=("Arial", 15),command = select_files2d).pack(padx=5, pady=5)
-    Button(Detectpage,text="Switch",height= 1, width=60,fg="Black",bg="#77CFFF",font=("Arial", 15),command = switch).pack(padx=5, pady=5)
-    A1 = Label(Detectpage,text="Top View",font=250,fg="Black",bg="#BCC9F9")
-    A1.pack()
+    # Button(Detectpage,text="Switch",height= 1, width=60,fg="Black",bg="#77CFFF",font=("Arial", 15),command = switch).pack(padx=5, pady=5)
+    # A1 = Label(Detectpage,text="Top View",font=250,fg="Black",bg="#BCC9F9")
+    # A1.pack()
 def select_files2d():
-    path=fd.askopenfilename(filetypes=[("Image File",'.jpg')])
+    path=fd.askopenfilename(filetypes=[("Image File",'.jpg','.png'),("Image File",'.png'),("Image File",'jpeg')])
     if(path !=""):
 
         namej = (path.split("/"))[-1]
@@ -69,24 +72,35 @@ def select_files2d():
         global detectedp
         global netlist
         path = '"'+path +'"'
-        imgsave = path_ofprogram+ "/Imgsave"
+        global imgsave
+        imgsave = path_ofprogram+ "/imgsave"
         detectedp = path_ofprogram+ "/runs/detect/exp/"+namej
         txtpath = path_ofprogram + "/runs/detect/exp/labels/"+name+".txt"
         resultpath = path_ofprogram +"/Result/result.png"
         epath = path_ofprogram + "/ERROR/error.png"
         print(detectedp)
+        print(txtpath)
+        print(imgsave)
+        # os.mkdir(imgsave)
         try:
-            comand_d = f"py detect.py --weights nsc2.pt --conf 0.5 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
+            comand_d = f"py detect.py --weights nsc3.pt --conf 0.2 --img-size 640 --source {path} --view-img --no-trace --save-txt" 
             os.system(comand_d)
             # move_c = "MOVE "+'"'+ detectedp +'"'+" "+'"'+ imgsave +'"'
             # print(move_c)
+            # os.remove(imgsave + namej)
+            
             shutil.move(detectedp, imgsave)
+            if (imgsave + "/" + namej not in count):
+                count.append(imgsave + "/" + namej)
+            print(count)    
+            # os.rename(imgsave+namej,imgsave+count)
+            # print(imgsave+namej,imgsave+count)
             if(TopV):
                 netlist = toNetlist(txtpath,"HIGH")
             else:
                 netlist = toNetlist(txtpath,"LOW")
-                text,cct = netlist2Circuit(netlist)
-                cct.draw("Result/result.png")
+            text,cct = netlist2Circuit(netlist)
+            cct.draw("Result/result.png")
         except:
             resultpath = epath
         # detectedi= Toplevel(mainmenu)
@@ -198,8 +212,12 @@ def Practice():
 def ExitProgram():
     confirm = messagebox.askquestion("Exit","Are you sure about to exit?" )
     exppath = path_ofprogram+ "/runs/detect/"
+    # shutil.rmtree(imgsave+"/")
+    print(count)
+    for i, x in enumerate(count):
+        os.remove(x)
     if confirm == "yes" :
-        if not any(os.scandir(exppath)):
+        if not any(os.scandir(exppath)):    
             mainmenu.destroy()
         else:
             mainmenu.destroy()
@@ -222,6 +240,10 @@ def ExitProgram():
 #ใส่ปุ่มกด
 bt1=Button(mainmenu,text="Circuit Sandbox",height= 5, width=60,fg="Black",bg="#77CFFF",font=("Arial", 15),command = Detectpage).pack(padx=5, pady=15)
 bt2=Button(mainmenu,text="Circuit Practice",height= 5, width=60,fg="Black",bg="#A9FFFD",font=("Arial", 15),command = Practice).pack(padx=5, pady=30)
+Button(mainmenu,text="Switch",height= 1, width=60,fg="Black",bg="#77CFFF",font=("Arial", 15),command = switch).pack(padx=5, pady=5)
+A1 = Label(mainmenu,text="Top View",font=250,fg="Black",bg="#BCC9F9")
+A1.pack()
+
 bt3=Button(mainmenu,text="Exit",height= 5, width=60,fg="Black",bg="#FF6861",font=("Arial", 15),command = ExitProgram).pack(padx=5, pady=45)
 
 

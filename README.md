@@ -19,5 +19,5 @@
 <ul>
     <li>👋 Hi, I’m Narawit Inyos.</li>
     <li>🌱 I’m currently learning Robotics Engineering and Artificial Intelligence.</li>
-    <li>📫 How to reach me narwit_i@cmu.ac.th</li>
+    <li>📫 How to reach me narawit_i@cmu.ac.th</li>
 </ul>
